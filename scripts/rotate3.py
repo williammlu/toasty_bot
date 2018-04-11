@@ -24,7 +24,7 @@ RESOLUTION = {'Full': (0, 0, 0),
               '1/16': (0, 0, 1),
               '1/32': (1, 0, 1)}
 for i in range(3):
-    pi.write(MODE[i], RESOLUTION['Full'][i])
+    pi.write(MODE[i], RESOLUTION['Half'][i])
 
 # Set duty cycle and frequency
 pi.set_PWM_dutycycle(STEP, 128)  # PWM 1/2 On 1/2 Off
