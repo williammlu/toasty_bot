@@ -9,6 +9,14 @@ STEP2 = 19    # Step GPIO Pin
 CCW = 0
 CW = 1
 
+
+RESOLUTION = {'Full': (0, 0, 0),
+              'Half': (1, 0, 0),
+              '1/4': (0, 1, 0),
+              '1/8': (1, 1, 0),
+              '1/16': (0, 0, 1),
+              '1/32': (1, 0, 1)}
+
 # Connect to pigpiod daemon
 pi = pigpio.pi()
 
@@ -21,12 +29,6 @@ pi.set_mode(STEP2, pigpio.OUTPUT)
 # Set up input switch
 
 MODE = (14, 15, 18)   # Microstep Resolution GPIO Pins
-RESOLUTION = {'Full': (0, 0, 0),
-              'Half': (1, 0, 0),
-              '1/4': (0, 1, 0),
-              '1/8': (1, 1, 0),
-              '1/16': (0, 0, 1),
-              '1/32': (1, 0, 1)}
 for i in range(3):
     pi.write(MODE[i], RESOLUTION['Half'][i])
 
