@@ -46,7 +46,7 @@ class Motor:
 
     def pi_go(self, steps=200, step_delay=.005, rev=None):
         if rev:
-            steps = rev * Motor.SPR
+            steps = (int) (rev * Motor.SPR)
         step_delay = max(step_delay, 0.0004) # tested minimum delay of 0.0004
 
         for i in range(steps):
@@ -57,7 +57,7 @@ class Motor:
 
 
 
-    def pi_spin(self, rev, speed, is_cw=True):
+    def spin(self, rev, speed, is_cw=True):
         """ Simplified interface """
         self.set_dir(Motor.CW if is_cw else Motor.CCW)
         if type(speed) is not int or speed not in (1,2,3,4,5):
