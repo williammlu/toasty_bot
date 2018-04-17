@@ -1,1 +1,1 @@
-from Motor import Motor
+from motor import Motor
