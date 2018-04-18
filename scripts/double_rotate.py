@@ -1,8 +1,8 @@
 from time import sleep
 import pigpio
 
-DIR1 = 20     # Direction GPIO Pin
-STEP1 = 21    # Step GPIO Pin
+DIR1 = 13     # Direction GPIO Pin
+STEP1 = 06    # Step GPIO Pin
 DIR2 = 26     # Direction GPIO Pin
 STEP2 = 19    # Step GPIO Pin
 

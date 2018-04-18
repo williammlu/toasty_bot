@@ -1,7 +1,8 @@
 import pigpio
 import time
+import RPi.GPIO as GPIO
 
-class Motor:
+class StepperMotor:
     CW = 1     # Clockwise Rotation
     CCW = 0    # Counterclockwise Rotation
     SPR = 200   # Steps per Revolution (360 / 1.8)
@@ -15,16 +16,16 @@ class Motor:
 
     delays = {1: 0.01, 2: 0.005, 3: 0.002, 4:0.001, 5:0.0004}
 
-    def __init__(self, DIR_PIN, STEP_PIN, pi, rotation=CW, resolution="Full", mode=(14,15,18)):
+    def __init__(self, DIR_PIN, STEP_PIN, pi=None, rotation=CW, resolution="Full", mode=(14,15,18)):
         self.DIR_PIN = DIR_PIN
         self.STEP_PIN = STEP_PIN
-        self.resolution = Motor.RESOLUTION[resolution]
+        self.resolution = StepperMotor.RESOLUTION[resolution]
         self.mode = mode
         self.pi = pi
+        self.setup()
         self.set_dir(rotation)
-        self.pi_setup()
 
-    def pi_setup(self):
+    def setup(self):
         if not self.pi:
             self.pi = pigpio.pi()
 
@@ -36,17 +37,17 @@ class Motor:
     def set_dir(self, rotation):
         self.pi.write(self.DIR_PIN, rotation)
     
-    def pi_start(self, pwm=128, pulses=500, direction=None):
+    def start(self, pwm=128, pulses=500, direction=None):
         self.pi.set_PWM_dutycycle(self.STEP_PIN, pwm)  # PWM 128 out of 256 on halfway
         self.pi.set_PWM_frequency(self.STEP_PIN, pulses)
 
-    def pi_stop(self):
+    def stop(self):
         self.pi.set_PWM_dutycycle(self.STEP_PIN, 0)
         self.pi.set_PWM_frequency(self.STEP_PIN, 0)
 
-    def pi_go(self, steps=200, step_delay=.005, rev=None):
+    def go(self, steps=200, step_delay=.001, rev=None):
         if rev:
-            steps = (int) (rev * Motor.SPR)
+            steps = (int) (rev * StepperMotor.SPR)
         step_delay = max(step_delay, 0.0004) # tested minimum delay of 0.0004
 
         for i in range(steps):
@@ -59,14 +60,36 @@ class Motor:
 
     def spin(self, rev, speed, is_cw=True):
         """ Simplified interface """
-        self.set_dir(Motor.CW if is_cw else Motor.CCW)
+        self.set_dir(StepperMotor.CW if is_cw else StepperMotor.CCW)
         if type(speed) is not int or speed not in (1,2,3,4,5):
             print("Your speed {} is invalid".format(speed))
             speed = 2
-        self.pi_go(step_delay=Motor.delays[speed], rev=rev)
+        self.go(step_delay=StepperMotor.delays[speed], rev=rev)
             
 
 
-    def pi_exit(self):
-        self.pi_stop() # stop pwm
+    def exit(self):
+        self.stop() # stop pwm
         self.pi.stop() # stop pi
+
+
+class GearBoxMotor:
+    
+    def __init__(self, STEP_PIN, pi=None):
+        self.STEP_PIN = STEP_PIN
+        self.pi = pi
+        self.setup()
+
+    def setup(self):
+        if not self.pi:
+            self.pi = pigpio.pi()
+
+        self.pi.set_mode(self.STEP_PIN, pigpio.OUTPUT)
+    def start(self, pwm=128, pulses=500, direction=None):
+        self.pi.set_PWM_dutycycle(self.STEP_PIN, pwm)  # PWM 128 out of 256 on halfway
+        self.pi.set_PWM_frequency(self.STEP_PIN, pulses)
+
+    def stop(self):
+        self.pi.set_PWM_dutycycle(self.STEP_PIN, 0)
+        self.pi.set_PWM_frequency(self.STEP_PIN, 0)
+
