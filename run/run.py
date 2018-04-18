@@ -13,7 +13,7 @@ m3 = GearBoxMotor(23) # blue single wire
 try:
     print("Starting gearbox motor")
     for l in range(30):
-        m3.start(pwm=200)
+        m3.start(duty=200)
         time.sleep(5)
         m3.stop()
         time.sleep(1)

@@ -37,8 +37,8 @@ class StepperMotor:
     def set_dir(self, rotation):
         self.pi.write(self.DIR_PIN, rotation)
     
-    def start(self, pwm=128, pulses=500, direction=None):
-        self.pi.set_PWM_dutycycle(self.STEP_PIN, pwm)  # PWM 128 out of 256 on halfway
+    def start(self, duty=128, pulses=500, direction=None):
+        self.pi.set_PWM_dutycycle(self.STEP_PIN, duty)  # PWM 128 out of 256 on halfway
         self.pi.set_PWM_frequency(self.STEP_PIN, pulses)
 
     def stop(self):
@@ -85,8 +85,8 @@ class GearBoxMotor:
             self.pi = pigpio.pi()
 
         self.pi.set_mode(self.STEP_PIN, pigpio.OUTPUT)
-    def start(self, pwm=128, pulses=500, direction=None):
-        self.pi.set_PWM_dutycycle(self.STEP_PIN, pwm)  # PWM 128 out of 256 on halfway
+    def start(self, duty=128, pulses=500, direction=None):
+        self.pi.set_PWM_dutycycle(self.STEP_PIN, duty)  # PWM 128 out of 256 on halfway
         self.pi.set_PWM_frequency(self.STEP_PIN, pulses)
 
     def stop(self):

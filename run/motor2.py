@@ -1,6 +1,8 @@
 import time
 import RPi.GPIO as GPIO
 
+# doesn't use pigpio library. Only steps, no pwm
+
 class Motor2:
     CW = 1     # Clockwise Rotation
     CCW = 0    # Counterclockwise Rotation
