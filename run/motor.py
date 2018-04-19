@@ -19,7 +19,9 @@ class StepperMotor:
     def __init__(self, DIR_PIN, STEP_PIN, pi=None, rotation=CW, resolution="Full", mode=(14,15,18)):
         self.DIR_PIN = DIR_PIN
         self.STEP_PIN = STEP_PIN
-        self.resolution = StepperMotor.RESOLUTION[resolution]
+        self.resolution = StepperMotor.RESOLUTION.get(resolution, (0,0,0)) # default to Full if entered wrong
+        if resolution != "Full":
+            print("Resolution is {}".format(resolution))
         self.mode = mode
         self.pi = pi
         self.setup()

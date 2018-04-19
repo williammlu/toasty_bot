@@ -5,7 +5,7 @@ import pigpio
 import time
 
 # pi = pigpio.pi()
-m1 = StepperMotor(13,06) # white wires
+m1 = StepperMotor(13,06, resolution="1/32") # white wires
 m2 = StepperMotor(26,19) # gray and blue wires
 m3 = GearBoxMotor(23) # blue single wire
 
@@ -26,10 +26,10 @@ try:
     print("Starting stepper motor")
     for l in range(30):
         for k in range(30):
-            m1.start()
+            m1.start(duty=255)
             time.sleep(1)
             m1.stop()
-            m1.go()
+            m1.spin(1, 5)
             time.sleep(1)
 except KeyboardInterrupt:
     print("keyboard escape")
