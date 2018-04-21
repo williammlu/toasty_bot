@@ -13,8 +13,10 @@ m3 = GearBoxMotor(23) # blue single wire
 try:
     print("Starting gearbox motor")
     for l in range(30):
-        m3.start(duty=200)
-        time.sleep(5)
+        # m3.pwm_test()
+        m3.start(duty=60, pulses=10)
+        # import pdb; pdb.set_trace() 
+        time.sleep(.1)
         m3.stop()
         time.sleep(1)
 except KeyboardInterrupt:
@@ -26,7 +28,7 @@ try:
     print("Starting stepper motor")
     for l in range(30):
         for k in range(30):
-            m1.start(duty=255)
+            m1.start(duty=25)
             time.sleep(1)
             m1.stop()
             m1.spin(1, 5)
@@ -62,8 +64,9 @@ except KeyboardInterrupt:
         # m1.set_dir(Motor.CCW)
     # i += 1
 
-
-# m1.exit()
+m1.exit()
+m2.exit()
+m3.exit()
 
 
 
