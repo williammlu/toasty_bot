@@ -20,10 +20,15 @@ pi = pigpio.pi()
 
 pi.set_mode(pin, pigpio.INPUT)
 pi.set_pull_up_down(pin, pigpio.PUD_DOWN)
+
+def cbf(gpio, level, tick):
+   print(gpio, level, tick)
+
+pi.callback(pin, pigpio.EITHER_EDGE, cbf)
 while True:
-    input_state = pi.read(pin)
-    if input_state == 1:
-        print('Button Pressed')
-        time.sleep(0.2)
+    # input_state = pi.read(pin)
+    # if input_state == 1:
+        # print('Button Pressed')
+    time.sleep(0.2)
 
 
