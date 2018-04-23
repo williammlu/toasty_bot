@@ -8,10 +8,10 @@ import pigpio
 import time
 
 # pi = pigpio.pi()
-m1 = StepperMotor(13,06, resolution="1/32") # white wires
+m1 = StepperMotor(13,06) # white wires
 m2 = StepperMotor(26,19) # gray and blue wires
 m3 = GearBoxMotor(23) # blue single wire
-m4 = StepperMotor(16,12) # red and gray wire
+m4 = StepperMotor(16,12, resolution="1/4") # red and gray wire
 m5 = StepperMotor(5,11) # purple and green
 h1 = Heater(7) # bright yellow wire with some green
 

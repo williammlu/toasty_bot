@@ -40,6 +40,7 @@ class StepperMotor:
         self.pi.write(self.DIR_PIN, rotation)
     
     def start(self, duty=128, pulses=500, direction=None):
+        self.set_dir(direction)
         self.pi.set_PWM_dutycycle(self.STEP_PIN, duty)  # PWM 128 out of 256 on halfway
         self.pi.set_PWM_frequency(self.STEP_PIN, pulses)
         print(pulses)
