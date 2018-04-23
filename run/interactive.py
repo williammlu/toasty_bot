@@ -26,6 +26,27 @@ def stop_all():
     h1.stop()
     pigpio.stop()
 
+def test_linear(motor=m4):
+    motor.spin(42,5,1)
+    motor.spin(42,5,0)
+
+def test_marshmallow():
+    m1.spin(0.8,2,1)
+    m1.spin(0.8,2,0)
+    time.sleep(2)
+    m1.spin(0.8,2,1)
+    m3.start(duty=60, pulses=10)
+    time.sleep(10)
+    m3.stop()
+    m1.spin(0.8,2,0)
+def quick_spin():
+    m3.start(duty=200, pulses=10)
+    time.sleep(0.1)
+    m3.stop()
+
+
+
+
 # try:
     # print("Starting heater PWM")
     # h1.start()
