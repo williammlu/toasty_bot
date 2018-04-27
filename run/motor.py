@@ -16,9 +16,10 @@ class StepperMotor:
 
     delays = {1: 0.01, 2: 0.005, 3: 0.002, 4:0.001, 5:0.0004}
 
-    def __init__(self, DIR_PIN, STEP_PIN, pi=None, rotation=CW, resolution="Full", mode=(14,15,18)):
+    def __init__(self, DIR_PIN, STEP_PIN,ENABLE_PIN=None, pi=None, rotation=CW, resolution="Full", mode=(14,15,18)):
         self.DIR_PIN = DIR_PIN
         self.STEP_PIN = STEP_PIN
+        self.ENABLE_PIN = ENABLE_PIN
         self.resolution = StepperMotor.RESOLUTION.get(resolution, (0,0,0)) # default to Full if entered wrong
         if resolution != "Full":
             print("Resolution is {}".format(resolution))
@@ -33,6 +34,9 @@ class StepperMotor:
 
         self.pi.set_mode(self.DIR_PIN, pigpio.OUTPUT)
         self.pi.set_mode(self.STEP_PIN, pigpio.OUTPUT)
+        if self.ENABLE_PIN:
+            self.pi.set_mode(self.ENABLE_PIN, pigpio.OUTPUT)
+        self.set_power(False)
         for i in range(3):
             self.pi.write(self.mode[i], self.resolution[i])
 
@@ -40,16 +44,23 @@ class StepperMotor:
         self.pi.write(self.DIR_PIN, rotation)
     
     def start(self, duty=128, pulses=500, direction=None):
+
+        self.set_power(True)
+        self.pi.write(self.STEP_PIN, 1)
         self.set_dir(direction)
         self.pi.set_PWM_dutycycle(self.STEP_PIN, duty)  # PWM 128 out of 256 on halfway
         self.pi.set_PWM_frequency(self.STEP_PIN, pulses)
+
         print(pulses)
 
     def stop(self):
         self.pi.set_PWM_dutycycle(self.STEP_PIN, 0)
         self.pi.set_PWM_frequency(self.STEP_PIN, 0)
+        self.set_power(False)
 
     def go(self, steps=200, step_delay=.001, rev=None):
+        self.set_power(True)
+
         if rev:
             steps = (int) (rev * StepperMotor.SPR)
         step_delay = max(step_delay, 0.0004) # tested minimum delay of 0.0004
@@ -59,6 +70,8 @@ class StepperMotor:
             time.sleep(step_delay)
             self.pi.write(self.STEP_PIN, 0)
             time.sleep(step_delay)
+
+        self.set_power(False)
 
 
 
@@ -70,6 +83,10 @@ class StepperMotor:
             speed = 2
         self.go(step_delay=StepperMotor.delays[speed], rev=rev)
             
+    def set_power(self, need_power):
+        if self.ENABLE_PIN:
+            self.pi.write(self.ENABLE_PIN, 0 if need_power else 1)
+        
 
 
     def exit(self):

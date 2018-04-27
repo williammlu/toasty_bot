@@ -6,12 +6,12 @@ from contact_switch import ContactSwitch
 import pigpio
 import time
 
-# pi = pigpio.pi()
-linear_push = StepperMotor(13,06) # white wires
+linear_push = StepperMotor(13,06, ENABLE_PIN=17) # green and orange wires
 mm_rotate_motor = GearBoxMotor(23) # blue single wire
-cracker_motor = StepperMotor(26,19) # gray and blue wires
-chocolate_motor = StepperMotor(16,12, resolution="1/4") # red and gray wire
-rotate_base_motor = StepperMotor(5,11) # purple and green
+cracker_motor = StepperMotor(26,19, ENABLE_PIN=27) # gray and blue wires
+chocolate_motor = StepperMotor(16,12, ENABLE_PIN=3) # red and gray wire
+rotate_base_motor = StepperMotor(5,11, ENABLE_PIN=2) # purple and green
+
 h1 = Heater(7) # bright yellow wire with some green
 
 c1 = ContactSwitch(20)

@@ -6,6 +6,7 @@ class Heater:
         self.pi = pigpio.pi()
         self.pin = pin
         self.pi.set_mode(self.pin, pigpio.OUTPUT)
+        self.stop()
 
     def start(self, duty=255, pulses=11):
         self.pi.set_PWM_dutycycle(self.pin, duty) # 255 is always on, 0 is never on
