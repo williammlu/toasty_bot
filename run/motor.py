@@ -60,6 +60,7 @@ class StepperMotor:
 
     def go(self, steps=200, step_delay=.001, rev=None):
         self.set_power(True)
+        time.sleep(0.2)
 
         if rev:
             steps = (int) (rev * StepperMotor.SPR)
@@ -71,6 +72,7 @@ class StepperMotor:
             self.pi.write(self.STEP_PIN, 0)
             time.sleep(step_delay)
 
+        time.sleep(0.5)
         self.set_power(False)
 
 

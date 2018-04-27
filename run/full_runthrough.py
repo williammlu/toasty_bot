@@ -25,40 +25,40 @@ def stop_all():
     h1.stop()
     pigpio.stop()
 
+rot = 1.62
 try:
-    rotate_base_motor.spin(1.625/2, 3, 0) # 90 deg clockwise
+    h1.start()
+    rotate_base_motor.spin(rot/2, 3, 0) # 90 deg clockwise
     time.sleep(1)
     rotate_base_motor.set_power(True)
     linear_push.spin(0.8,2,1)# push skewer forward
     time.sleep(5)
     linear_push.spin(0.8,2,0) # pull skewer back
+    time.sleep(1)
     rotate_base_motor.set_power(False)
     time.sleep(1)
 
-    rotate_base_motor.spin(1.625, 3, 1) # 180 deg counter-clockwise
+    rotate_base_motor.spin(rot, 3, 1) # 180 deg counter-clockwise
     time.sleep(1)
     linear_push.spin(0.8,4,1) # push skewer forward
-    time.sleep(5)
-    linear_push.spin(0.8,4,0) # pull skewer back
-    time.sleep(1)
-
-    rotate_base_motor.spin(1.625/2, 3, 0) # 90 deg clockwise
-    time.sleep(1)
-    rotate_base_motor.set_power(True)
-    cracker_motor.spin(42, 5, 1)
-    cracker_motor.spin(42, 5, 0)
-    time.sleep(1)
+    # marshmallow heating rn
+    cracker_motor.spin(44, 5, 1)
     chocolate_motor.spin(42, 5, 1)
-    chocolate_motor.spin(42, 5, 0)
-    rotate_base_motor.set_power(False)
-    time.sleep(1)
+    cracker_motor.spin(44, 5, 0)
+    time.sleep(30)
+    linear_push.spin(0.8,4,0) # pull skewer back
+
+    rotate_base_motor.spin(rot/2, 3, 0) # 90 deg clockwise
+    time.sleep(2)
     linear_push.spin(0.8,4,1) # push skewer forward
     time.sleep(1)
-    cracker_motor.spin(42, 5, 1)
+    cracker_motor.spin(44, 5, 1)
     time.sleep(1)
-    cracker_motor.spin(42, 5, 0)
     print("GOGOGOG")
+    cracker_motor.spin(44, 5, 0)
+    chocolate_motor.spin(42, 5, 0)
     time.sleep(10)
+    linear_push.spin(0.8,4,0) # push skewer forward
 
 except KeyboardInterrupt:
     stop_all()

@@ -14,6 +14,7 @@ rotate_base_motor = StepperMotor(5,11, ENABLE_PIN=2) # purple and green
 
 h1 = Heater(7) # bright yellow wire with some green
 
+pi = pigpio.pi()
 c1 = ContactSwitch(20)
 
 def stop_all():
